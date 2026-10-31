@@ -7,6 +7,7 @@ from docguard.extractors.python_ast import extract_python
 from docguard.mapper import map_claims_to_facts
 from docguard.models import Finding
 from docguard.rules.value_mismatch import find_value_mismatches
+from docguard.scoring import score_findings
 
 
 def run_engine(
@@ -21,4 +22,5 @@ def run_engine(
     claims = extract_markdown(documentation_path)
     functions = extract_python(python_source_path)
     mapped_defaults = map_claims_to_facts(claims, functions)
-    return find_value_mismatches(mapped_defaults)
+    findings = find_value_mismatches(mapped_defaults)
+    return score_findings(findings)
