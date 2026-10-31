@@ -15,6 +15,9 @@ dependencies = [
     "rich>=13.0",
 ]
 
+[project.scripts]
+docguard = "docguard.cli:main"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
