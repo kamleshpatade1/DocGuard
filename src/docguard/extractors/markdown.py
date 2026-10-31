@@ -39,6 +39,9 @@ _KEYWORD_ARGUMENT = re.compile(
     r"(?P<parameter>[A-Za-z_]\w*)\s*=\s*"
     r"(?P<value>'(?:\\.|[^'\\])*'|\"(?:\\.|[^\"\\])*\"|[^,]+)"
 )
+_FUNCTION_REFERENCE = re.compile(
+    r"(?<![\w.])(?P<function>[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\s*\("
+)
 
 
 def extract_markdown(source_path: str | Path) -> list[ExtractedClaim]:
@@ -65,6 +68,51 @@ def extract_markdown(source_path: str | Path) -> list[ExtractedClaim]:
             current_line = None
 
     return claims
+
+
+class FunctionReference(TypedDict):
+    """A function call mentioned in Markdown."""
+
+    name: str
+    text: str
+    file_path: str
+    line_number: int
+
+
+def extract_function_references(source_path: str | Path) -> list[FunctionReference]:
+    """Extract simple function-call references from Markdown prose and inline code.
+
+    Fenced code blocks are ignored. This intentionally recognizes call-shaped
+    names such as ``subtract()`` rather than attempting general language parsing.
+    """
+    path = Path(source_path)
+    try:
+        source = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        raise OSError(f"Could not read Markdown file {path}: {exc}") from exc
+
+    references: list[FunctionReference] = []
+    seen: set[tuple[str, int, str]] = set()
+    source_lines = source.splitlines()
+
+    for token in MarkdownIt().parse(source):
+        if token.type in {"paragraph_open", "heading_open"} and token.map is not None:
+            for line_index in range(token.map[0], token.map[1]):
+                text = source_lines[line_index].strip()
+                line_number = line_index + 1
+                for match in _FUNCTION_REFERENCE.finditer(text):
+                    reference = {
+                        "name": match.group("function"),
+                        "text": text,
+                        "file_path": str(path),
+                        "line_number": line_number,
+                    }
+                    key = (reference["name"], line_number, text)
+                    if key not in seen:
+                        references.append(reference)
+                        seen.add(key)
+
+    return references
 
 
 def _extract_paragraph_claims(

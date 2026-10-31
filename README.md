@@ -1,8 +1,9 @@
 # DocGuard
 
 DocGuard is a small Python tool that checks whether selected documentation
-claims still match Python source code. Its current check compares documented
-function parameter defaults with defaults found in Python functions and methods.
+claims still match Python source code. Its checks compare documented function
+parameter defaults with Python defaults and flag call-shaped function references
+that are missing from the analyzed source.
 
 ## The problem
 
@@ -25,24 +26,27 @@ locations so a developer can review it.
   without a recognized value are skipped.
 - **`VALUE_MISMATCH` detection:** compares supported literal values and reports
   when the documented and Python defaults differ.
+- **`FUNCTION_NOT_FOUND` detection:** reports simple function-call references
+  found in Markdown when no matching top-level function or class method is
+  present in the Python source.
 - **Confidence scoring:** assigns `high`, `medium`, or `low` from the
   completeness of documentation and source evidence already on a finding. It
   does not invoke an external verifier.
 - **Command-line interface:** compares one Markdown file with one Python source
   file, prints findings with locations and confidence, and returns a non-zero
   status when drift is found.
+- **Web dashboard:** provides editable Python and Markdown inputs backed by a
+  Flask API that reuses the same detection engine.
 
 ## How it works
 
 ```text
-Markdown file ──> Markdown claim extractor ──┐
-                                             ├─> Mapper ─> VALUE_MISMATCH rule
-Python file ───> Python AST extractor ───────┘                 │
-                                                               v
-                                                     Confidence scoring
-                                                               │
-                                                               v
-                                                     CLI findings/output
+Markdown file ──> Markdown extractors ──┐
+                                        ├─> Mapper ─> VALUE_MISMATCH rule ──┐
+Python file ───> Python AST extractor ──┘                                   ├─> Confidence scoring
+                             └────────────> FUNCTION_NOT_FOUND rule ─────────┘          │
+                                                                                       v
+                                                                        CLI / web API findings
 ```
 
 The engine connects these steps for a single documentation/Python file pair.
@@ -115,8 +119,9 @@ python -m ruff check
 ### Implemented today
 
 - The engine accepts one Markdown file and one Python file per run.
-- Detection is limited to recognizable function default-value claims.
-- Markdown matching uses a small set of explicit patterns; it does not interpret
+- Default comparison is limited to recognizable function default-value claims.
+- Missing-function detection recognizes simple call-shaped references in
+  Markdown prose and inline code; it does not resolve imports or understand
   arbitrary natural-language descriptions.
 - Python extraction uses syntax-tree information and does not import or execute
   the analyzed module.
@@ -132,6 +137,44 @@ python -m ruff check
 
 The repository includes a Git changed-file helper, but the current DocGuard
 engine and CLI do not use it to scope detection.
+
+## Web dashboard
+
+The optional dashboard is a React/Vite frontend with a Flask API. The API writes
+the submitted text to temporary files for the existing path-based engine,
+returns findings as JSON, and removes those temporary files after the scan.
+Python input is parsed with the AST and is never executed.
+
+The workspace provides line-numbered editable editors, Python/Markdown uploads,
+sample scans for clean input and both supported rules, searchable and sortable
+findings, editor navigation, and JSON export. Repeated equivalent findings are
+grouped while retaining each documentation location.
+
+Install the Python and Flask requirements from the repository root:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
+python -m pip install -r web/backend/requirements.txt
+```
+
+In one terminal, start the Flask API from the repository root:
+
+```bash
+PYTHONPATH=src python web/backend/app.py
+```
+
+In another terminal, install frontend packages and start Vite:
+
+```bash
+cd web/frontend
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite (normally `http://localhost:5173`). Vite
+proxies `/api` requests to the local Flask server on port `5000`.
 
 ## Project information
 
