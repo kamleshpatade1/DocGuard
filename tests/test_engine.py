@@ -19,6 +19,7 @@ def test_engine_finds_mismatching_documented_default(tmp_path):
     assert len(findings) == 1
     assert isinstance(findings[0], Finding)
     assert findings[0].rule_id == "VALUE_MISMATCH"
+    assert findings[0].confidence == "high"
     assert findings[0].documentation_file == str(documentation)
     assert findings[0].evidence_file == str(python_source)
 
