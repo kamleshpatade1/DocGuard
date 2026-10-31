@@ -59,7 +59,7 @@ Our goal is to help developers maintain accurate documentation and reduce the ma
 
 ## Repository URL
 
-To be added after creating the public GitHub repository.
+https://github.com/kamleshpatade1/DocGuard
 
 ## Development Approach
 
