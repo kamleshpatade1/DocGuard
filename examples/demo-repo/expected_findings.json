@@ -1,0 +1,11 @@
+{
+  "note": "Demo reference fixture, not actual engine output; it may need adaptation to the shared Finding model later.",
+  "expected_finding": {
+    "rule_id": "VALUE_MISMATCH",
+    "symbol": "get_students",
+    "documented_value": 30,
+    "actual_value": 50,
+    "source_file": "student_api.py",
+    "explanation": "The README says the default limit is 30, but the function default is 50."
+  }
+}
