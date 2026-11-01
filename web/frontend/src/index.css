@@ -8,11 +8,18 @@
   font-weight: 400;
   color: #172033;
   background: #f8f9fb;
+  color-scheme: light;
   --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  background: #0e1523;
+}
+
 * { box-sizing: border-box; }
-body { min-width: 320px; min-height: 100vh; margin: 0; }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: #f8f9fb; }
+:root[data-theme="dark"] body { background: #0e1523; }
 button, textarea { font: inherit; }
 button { -webkit-tap-highlight-color: transparent; }
 ::selection { color: #25316c; background: #dfe3ff; }

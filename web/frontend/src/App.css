@@ -65,19 +65,6 @@
 .nav-item.active svg { color: #a7b0ff; }
 .sidebar-spacer { flex: 1; }
 
-.sidebar-note { padding: 13px; border: 1px solid #293448; border-radius: 10px; background: #182234; }
-.sidebar-note-icon {
-  width: 28px;
-  height: 28px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  color: #a4e0c1;
-  background: #233a3b;
-}
-.sidebar-note strong { color: #edf1f8; font-size: 12px; }
-.sidebar-note p { margin: 5px 0 0; color: #9aa7bc; font-size: 10px; line-height: 1.55; }
 .sidebar-footer { display: flex; align-items: center; gap: 8px; padding: 17px 8px 0; color: #a2aec2; font-size: 10px; }
 .status-dot, .hint-dot, .editor-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #54c896; }
 .main-content { min-width: 0; }
@@ -280,6 +267,150 @@
 .page-footer { margin-top: 22px; color: #a0a8b5; font-size: 9px; text-align: center; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
 
+.topbar-actions { display: flex; align-items: center; gap: 16px; }
+.theme-toggle {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e3e7ed;
+  border-radius: 8px;
+  color: #596579;
+  background: #fff;
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+.theme-toggle:hover { color: #4b5ac3; border-color: #b9c0f7; background: #f7f8ff; }
+
+.theme-dark {
+  color: #e5eaf4;
+  background: #0e1523;
+}
+.theme-dark .topbar { border-color: #293448; background: #151e2e; }
+.theme-dark .breadcrumbs { color: #a5b0c2; }
+.theme-dark .breadcrumbs strong { color: #e0e6f0; }
+.theme-dark .crumb-slash { color: #647086; }
+.theme-dark .engine-pill { color: #b0bacb; }
+.theme-dark .workspace { color: #e5eaf4; }
+.theme-dark .page-heading h1,
+.theme-dark .section-title { color: #edf2fb; }
+.theme-dark .page-heading p,
+.theme-dark .section-subtitle { color: #a3aec0; }
+.theme-dark .eyebrow { color: #a6afff; }
+.theme-dark .heading-icon,
+.theme-dark .rule-icon { border-color: #353f67; color: #bdc5ff; background: #242d4a; }
+
+.theme-dark .sample-toolbar,
+.theme-dark .editor-card,
+.theme-dark .stat-card,
+.theme-dark .finding-card,
+.theme-dark .rule-card,
+.theme-dark .state-card,
+.theme-dark .detail-block {
+  border-color: #303b50;
+  background: #182234;
+  box-shadow: none;
+}
+.theme-dark .sample-toolbar { background: #151e2e; }
+.theme-dark .sample-label,
+.theme-dark .editor-label { color: #d7dfed; }
+.theme-dark .sample-label svg,
+.theme-dark .editor-label svg { color: #a6afff; }
+.theme-dark .sample-button,
+.theme-dark .subtle-button,
+.theme-dark .upload-button,
+.theme-dark .outline-button,
+.theme-dark .copy-button,
+.theme-dark .icon-button,
+.theme-dark .detail-block button,
+.theme-dark .theme-toggle {
+  border-color: #3a465c;
+  color: #c3ccdc;
+  background: #202c40;
+}
+.theme-dark .sample-button:hover,
+.theme-dark .subtle-button:hover,
+.theme-dark .upload-button:hover,
+.theme-dark .outline-button:hover,
+.theme-dark .copy-button:hover,
+.theme-dark .detail-block button:hover,
+.theme-dark .theme-toggle:hover {
+  border-color: #7582e3;
+  color: #e0e4ff;
+  background: #2a3651;
+}
+.theme-dark .theme-toggle { color: #f4d687; }
+.theme-dark .file-name { color: #c0cadb; background: #263248; }
+.theme-dark .uploaded-tag { color: #8ed3ae; }
+.theme-dark .editor-description { color: #a3aec0; }
+.theme-dark .code-editor { border-color: #303b50; background: #111a29; }
+.theme-dark .line-gutter { border-color: #303b50; color: #8693a8; background: #151f30; }
+.theme-dark .line-number.active-line { color: #d3d8ff; background: #303b68; box-shadow: inset -2px 0 #9aa5ff; }
+.theme-dark .code-editor textarea { color: #dbe3f1; caret-color: #dbe3f1; }
+.theme-dark .code-editor textarea::selection { color: #fff; background: #46548a; }
+.theme-dark .editor-footer { border-color: #303b50; color: #a3aec0; }
+.theme-dark .jump-indicator { color: #b2bbff; }
+.theme-dark .editor-card:focus-within { border-color: #727fe1; box-shadow: 0 0 0 3px rgba(114, 127, 225, 0.15); }
+
+.theme-dark .search-field,
+.theme-dark .select-control {
+  border-color: #3a465c;
+  color: #aeb9cb;
+  background: #151e2e;
+}
+.theme-dark .search-field input,
+.theme-dark .select-control select { color: #dbe3f1; background: transparent; }
+.theme-dark .search-field input::placeholder { color: #8996aa; }
+.theme-dark .select-control option { color: #dbe3f1; background: #182234; }
+.theme-dark .filter-tabs { border-color: #303b50; background: #141d2c; }
+.theme-dark .filter-tab { color: #aeb9cb; }
+.theme-dark .filter-tab:hover { color: #c8ceff; }
+.theme-dark .filter-tab.selected { color: #e1e4ff; background: #303b5d; box-shadow: none; }
+.theme-dark .finding-symbol { color: #f09a84; }
+.theme-dark .finding-summary-main > strong,
+.theme-dark .state-card strong,
+.theme-dark .detail-heading,
+.theme-dark .detail-rule strong,
+.theme-dark .stat-copy strong,
+.theme-dark .rule-card h3 { color: #e1e8f4; }
+.theme-dark .finding-message,
+.theme-dark .detail-message,
+.theme-dark .detail-block p { color: #b3bfd1; }
+.theme-dark .finding-locations { color: #a4b0c3; }
+.theme-dark .confidence { color: #c6d0df; background: #2a3548; }
+.theme-dark .confidence-high { color: #a5e0bb; background: #1f4136; }
+.theme-dark .confidence-medium { color: #f1cf8b; background: #463a25; }
+.theme-dark .confidence-low { color: #c6d0df; background: #2a3548; }
+.theme-dark .severity-high { color: #ffaaa3; background: #492c34; }
+.theme-dark .severity-medium { color: #f1cf8b; background: #463a25; }
+.theme-dark .severity-low { color: #c6d0df; background: #2a3548; }
+.theme-dark .finding-details { border-color: #303b50; background: #141d2b; }
+.theme-dark .detail-rule { color: #afbbce; }
+.theme-dark .detail-rule code { color: #c6cbff; background: #2a3454; }
+.theme-dark .detail-label { color: #a3aec0; }
+.theme-dark .detail-location { border-color: #303b50; }
+.theme-dark .detail-location:last-child { border-bottom-color: transparent; }
+.theme-dark .no-source-line { color: #a0acc0; }
+.theme-dark .detail-confidence { color: #adb9cb; }
+.theme-dark .detail-confidence strong { color: #d5deec; }
+.theme-dark .rule-id { color: #bbc3ff; }
+.theme-dark .rule-card p { color: #b1bdcf; }
+.theme-dark .text-button { color: #b5bdff; }
+.theme-dark .text-button:hover { color: #d5d9ff; }
+.theme-dark .page-footer { color: #9aa7bb; }
+.theme-dark .results-section,
+.theme-dark .rule-guide { border-color: #303b50; }
+.theme-dark .state-card { color: #c3ccdc; }
+.theme-dark .clear-state { border-color: #315343; background: #182d29; }
+.theme-dark .clear-state > svg { color: #8bd1a9; }
+.theme-dark .error-state { border-color: #5b373c; color: #f0aaa3; background: #302127; }
+.theme-dark .error-state strong { color: #ffc1ba; }
+.theme-dark .notice { border-color: #35415a; color: #c2cce0; background: #202a3e; }
+.theme-dark .notice-success { border-color: #315343; color: #a5e0bb; background: #1c302a; }
+.theme-dark .notice-warning { border-color: #584a30; color: #f1cf8b; background: #302a20; }
+.theme-dark .notice-error { border-color: #5b373c; color: #ffb4ad; background: #302127; }
+.theme-dark .finding-card:hover { border-color: #45516a; }
+
 @media (max-width: 1100px) {
   .app-shell { grid-template-columns: 212px minmax(0, 1fr); }
   .topbar { padding: 0 25px; }
@@ -291,7 +422,7 @@
   .app-shell { grid-template-columns: 1fr; }
   .sidebar { position: static; height: auto; flex-direction: row; align-items: center; gap: 15px; padding: 11px 16px; }
   .brand { padding: 0; }
-  .sidebar-label, .sidebar-spacer, .sidebar-note, .sidebar-footer { display: none; }
+  .sidebar-label, .sidebar-spacer, .sidebar-footer { display: none; }
   .side-nav { display: flex; margin-left: auto; }
   .nav-item { min-height: 34px; padding: 0 9px; font-size: 10px; }
   .topbar { height: 47px; padding: 0 17px; }
@@ -310,6 +441,8 @@
   .toolbar-spacer { display: none; }
   .sample-button { flex: 1; padding: 0 5px; font-size: 9px; }
   .subtle-button { flex: 1; }
+  .topbar-actions { gap: 9px; }
+  .theme-toggle { width: 29px; height: 29px; }
   .editor-card-header { padding: 0 8px; }
   .editor-file-title { gap: 5px; }
   .editor-label { font-size: 10px; }

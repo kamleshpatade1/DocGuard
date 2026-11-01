@@ -12,9 +12,11 @@ import {
   FileText,
   FolderOpen,
   LoaderCircle,
+  Moon,
   RotateCcw,
   ScanSearch,
   ShieldCheck,
+  Sun,
   Trash2,
   Upload,
   X,
@@ -100,7 +102,16 @@ function lineCount(value) {
   return value.split('\n').length
 }
 
+function getSavedTheme() {
+  try {
+    return localStorage.getItem('docguard-theme') === 'dark' ? 'dark' : 'light'
+  } catch {
+    return 'light'
+  }
+}
+
 function App() {
+  const [theme, setTheme] = useState(getSavedTheme)
   const [inputs, setInputs] = useState(initialInputs)
   const [scanState, setScanState] = useState('idle')
   const [lastScan, setLastScan] = useState(null)
@@ -114,6 +125,23 @@ function App() {
   const hasInputs = Boolean(inputs.python.trim() && inputs.markdown.trim())
   const scanIsStale = lastScan && lastScan.revision !== inputs.revision
   const findings = lastScan?.findings ?? []
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+  }, [theme])
+
+  function toggleTheme() {
+    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    setTheme(nextTheme)
+    try {
+      localStorage.setItem('docguard-theme', nextTheme)
+    } catch {
+      setNotice({
+        type: 'error',
+        text: 'Theme changed, but browser storage is unavailable so the preference may not persist.',
+      })
+    }
+  }
 
   function updateInputs(update) {
     setInputs((current) => ({ ...current, ...update, revision: current.revision + 1 }))
@@ -333,7 +361,7 @@ function App() {
         : 'Not scanned'
 
   return (
-    <div className="app-shell" onKeyDown={handleWorkspaceKeyDown}>
+    <div className={`app-shell${theme === 'dark' ? ' theme-dark' : ''}`} onKeyDown={handleWorkspaceKeyDown}>
       <aside className="sidebar">
         <a className="brand" href="#scanner" aria-label="DocGuard home">
           <span className="brand-mark"><ShieldCheck size={21} strokeWidth={2.2} /></span>
@@ -345,18 +373,24 @@ function App() {
           <a className="nav-item" href="#rule-guide"><ShieldCheck size={18} /><span>Rule guide</span></a>
         </nav>
         <div className="sidebar-spacer" />
-        <div className="sidebar-note">
-          <div className="sidebar-note-icon"><ShieldCheck size={17} /></div>
-          <strong>Private by design</strong>
-          <p>Source is analyzed locally by your DocGuard server and never executed.</p>
-        </div>
         <div className="sidebar-footer"><span className="status-dot" />Local workspace</div>
       </aside>
 
       <main className="main-content" id="scanner">
         <header className="topbar">
           <div className="breadcrumbs"><span>Workspace</span><span className="crumb-slash">/</span><strong>Drift scanner</strong></div>
-          <div className={`engine-pill engine-${scanState}`}><span className="status-dot" />{statusLabel}</div>
+          <div className="topbar-actions">
+            <div className={`engine-pill engine-${scanState}`}><span className="status-dot" />{statusLabel}</div>
+            <button
+              className="theme-toggle"
+              type="button"
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+            >
+              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+            </button>
+          </div>
         </header>
 
         <div className="workspace">
